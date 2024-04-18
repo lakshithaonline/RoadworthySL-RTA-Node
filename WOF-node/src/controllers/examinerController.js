@@ -15,7 +15,7 @@ exports.loginExaminer = async (req, res) => {
     try {
         const { username, password } = req.body;
         const token = await login(username, password);
-        console.log('Examiner logged in successfully:', username); // Add console log for successful login
+        console.log('Examiner logged in successfully:', username);
         res.status(200).json({ token });
     } catch (err) {
         console.error('Error logging in examiner:', err.message);
