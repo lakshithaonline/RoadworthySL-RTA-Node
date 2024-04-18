@@ -1,4 +1,3 @@
-// controllers/userController.js or controllers/adminController.js
 const { loginAdmin } = require('../services/adminService');
 
 exports.adminLogin = async (req, res) => {
