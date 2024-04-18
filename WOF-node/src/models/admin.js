@@ -1,4 +1,3 @@
-// models/admin.js (assuming you are using MongoDB with Mongoose)
 const mongoose = require('mongoose');
 
 const adminSchema = new mongoose.Schema({
