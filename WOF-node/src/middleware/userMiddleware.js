@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../utils/constants');
 
-exports.verifyToken = (req, res, next) => {
+exports.verifyUserToken = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     console.log('Received token:', token);
 
@@ -17,7 +17,7 @@ exports.verifyToken = (req, res, next) => {
         console.log('Decoded token:', decoded);
 
         // Check if the decoded token contains necessary information for vehicle authentication
-        if (!decoded || !decoded.role || decoded.role !== 'Examiner') {
+        if (!decoded || !decoded.role || decoded.role !== 'user') {
             return res.status(403).json({ message: 'Unauthorized' });
         }
         req.user = decoded;

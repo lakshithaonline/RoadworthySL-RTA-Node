@@ -40,7 +40,7 @@ const examinerSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        default: 'examiner'
+        default: 'Examiner'
     }
 });
 
