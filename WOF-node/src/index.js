@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const connectDB = require('./config/database');
 const userMiddleware = require('./middleware/userMiddleware');
 const authMiddleware = require('./middleware/authMiddleware');
@@ -11,6 +12,12 @@ const vehicleRoutes = require("./routes/vehicleRoutes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true, // Allowing cookies
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 connectDB();
