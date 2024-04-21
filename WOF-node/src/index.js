@@ -7,7 +7,6 @@ const authMiddleware = require('./middleware/examinerMiddleware');
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const examinerRoutes = require("./routes/examinerRoutes");
-const vehicleRoutes = require("./routes/vehicleRoutes");
 const authRouters = require('./routes/authRoutes')
 const adminMiddleware = require("./middleware/adminMiddleware");
 
