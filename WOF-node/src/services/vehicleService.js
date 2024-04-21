@@ -1,6 +1,6 @@
 const Vehicle = require('../models/vehicle');
-const bcrypt = require('bcryptjs');
-const User = require('../models/user');
+// const bcrypt = require('bcryptjs');
+// const User = require('../models/user');
 
 
 exports.registerVehicle = async (registrationNumber, make, model, vinNumber, mfd, reg, mileage, ownerId) => {
