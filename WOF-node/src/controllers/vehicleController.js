@@ -46,20 +46,20 @@ exports.viewVehicle = async (req, res) => {
     }
 };
 
-exports.registerVehicleByExaminer = async (req, res) => {
-    try {
-        const vehicleData = req.body;
-        const examinerData = req.user;
-
-        const { newUser, newVehicle } = await vehicleService.registerVehicleAndCreateUser(vehicleData, examinerData);
-
-        res.status(201).json({
-            message: 'Vehicle and user created successfully',
-            user: newUser,
-            vehicle: newVehicle
-        });
-    } catch (error) {
-        console.error('Failed to register vehicle:', error);
-        res.status(500).json({ message: error.message });
-    }
-};
+// exports.registerVehicleByExaminer = async (req, res) => {
+//     try {
+//         const vehicleData = req.body;
+//         const examinerData = req.user;
+//
+//         const { newUser, newVehicle } = await vehicleService.registerVehicleAndCreateUser(vehicleData, examinerData);
+//
+//         res.status(201).json({
+//             message: 'Vehicle and user created successfully',
+//             user: newUser,
+//             vehicle: newVehicle
+//         });
+//     } catch (error) {
+//         console.error('Failed to register vehicle:', error);
+//         res.status(500).json({ message: error.message });
+//     }
+// };

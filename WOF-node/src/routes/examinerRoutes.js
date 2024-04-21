@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { loginExaminer, registerExaminer} = require('../controllers/examinerController');
-const authMiddleware = require("../middleware/authMiddleware");
-const vehicleController = require("../controllers/vehicleController");
+const examinerMiddleware = require("../middleware/examinerMiddleware");
+const examinerController = require("../controllers/examinerController");
 
-router.post('/login', loginExaminer);
-router.post('/create', registerExaminer);
-router.post('/register-vehicle', authMiddleware.verifyToken, vehicleController.registerVehicleByExaminer);
+
+router.post('/vehicle-register-by-examiner', examinerMiddleware.verifyToken, examinerController.registerVehicleByExaminer); //tested and work
 
 module.exports = router;

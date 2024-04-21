@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { login, register } = require('../controllers/userController');
+const userMiddleware = require("../middleware/userMiddleware");
+const vehicleController = require("../controllers/vehicleController");
 
-router.post('/login', login);
-router.post('/create', register);
+
+
+router.post('/vehicle-register', userMiddleware.verifyUserToken, vehicleController.registerVehicle); //tested and works
 
 module.exports = router;

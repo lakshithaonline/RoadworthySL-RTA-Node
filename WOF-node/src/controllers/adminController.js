@@ -1,4 +1,5 @@
 const { loginAdmin } = require('../services/adminService');
+const {createExaminer} = require("../services/adminService");
 
 exports.adminLogin = async (req, res) => {
     try {
@@ -12,5 +13,16 @@ exports.adminLogin = async (req, res) => {
         });
     } catch (error) {
         res.status(401).json({ message: error.message });
+    }
+};
+
+exports.registerExaminer = async (req, res) => {
+    try {
+        const { username, password, email, firstname, lastname, branch, dob, age, sex, role } = req.body;
+        const newExaminer = await createExaminer(username, password, email, firstname, lastname, branch, dob, age, sex, role);
+        res.status(201).json({ message: 'Examiner registered successfully', examiner: newExaminer });
+    } catch (error) {
+        console.error('Error registering examiner:', error.message);
+        res.status(400).json({ message: error.message });
     }
 };
