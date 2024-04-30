@@ -18,8 +18,8 @@ exports.adminLogin = async (req, res) => {
 
 exports.registerExaminer = async (req, res) => {
     try {
-        const { username, password, email, firstname, lastname, branch, dob, age, sex, role } = req.body;
-        const newExaminer = await createExaminer(username, password, email, firstname, lastname, branch, dob, age, sex, role);
+        const { username, password, email, firstname, lastname, branch, dob, sex, role } = req.body;
+        const newExaminer = await createExaminer(username, password, email, firstname, lastname, branch, dob, sex, role);
         res.status(201).json({ message: 'Examiner registered successfully', examiner: newExaminer });
     } catch (error) {
         console.error('Error registering examiner:', error.message);

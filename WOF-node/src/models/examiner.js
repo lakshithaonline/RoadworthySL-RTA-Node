@@ -30,10 +30,6 @@ const examinerSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    age: {
-        type: Number,
-        required: true
-    },
     sex: {
         type: String,
         required: true
