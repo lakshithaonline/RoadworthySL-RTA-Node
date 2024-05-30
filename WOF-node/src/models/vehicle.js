@@ -14,7 +14,7 @@ const vehicleSchema = new mongoose.Schema({
     mileage: Number,
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user' // Assuming Examiner model for now, you might need to change it
+        ref: 'user'  //this will work for only user vehicle creates
     },
 });
 
