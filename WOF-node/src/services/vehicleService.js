@@ -37,6 +37,12 @@ exports.viewVehicle = async (registrationNumber) => {
     return vehicle;
 };
 
+exports.getVehiclesByOwnerId = async (ownerId) => {
+    const vehicles = await Vehicle.find({ owner: ownerId });
+    return vehicles;
+};
+
+
 //
 // //vehicle added by examiner
 // async function registerVehicleAndCreateUser(vehicleData, examinerData) {
