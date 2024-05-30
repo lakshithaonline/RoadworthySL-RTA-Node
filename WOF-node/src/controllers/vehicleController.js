@@ -1,4 +1,6 @@
 const vehicleService = require('../services/vehicleService');
+const {JWT_SECRET} = require("../utils/constants");
+const {verify} = require("jsonwebtoken");
 
 exports.registerVehicle = async (req, res) => {
     try {
@@ -45,6 +47,27 @@ exports.viewVehicle = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+
+exports.getVehiclesByToken = async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+
+        const decoded = verify(token, JWT_SECRET);
+        const ownerId = decoded.id;
+
+        const vehicles = await vehicleService.getVehiclesByOwnerId(ownerId);
+        res.status(200).json({ vehicles });
+    } catch (error) {
+        console.error('Error retrieving vehicles:', error.message);
+        res.status(400).json({ message: error.message });
+    }
+};
+
+
+
 
 // exports.registerVehicleByExaminer = async (req, res) => {
 //     try {
