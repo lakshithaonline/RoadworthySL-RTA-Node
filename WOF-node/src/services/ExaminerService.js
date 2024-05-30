@@ -1,15 +1,15 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Examiner = require('../models/examiner');
-const { JWT_SECRET } = require('../utils/constants');
+const {JWT_SECRET} = require('../utils/constants');
 const User = require("../models/user");
 const Vehicle = require("../models/vehicle");
 
 
 const login = async (username, password) => {
-    const examiner = await Examiner.findOne({ username });
+    const examiner = await Examiner.findOne({username});
     if (!examiner || !(await bcrypt.compare(password, examiner.password))) {
-        throw { status: 401, message: 'Invalid username or password' };
+        throw {status: 401, message: 'Invalid username or password'};
     }
     const token = jwt.sign(
         {id: examiner._id, username: examiner.username, role: examiner.role},  // Include role in the JWT
@@ -22,7 +22,7 @@ const login = async (username, password) => {
 
 //vehicle added by examiner
 async function registerVehicleAndCreateUser(vehicleData, examinerData) {
-    const { registrationNumber, make, model, vinNumber, mfd, reg, mileage } = vehicleData;
+    const {registrationNumber, make, model, vinNumber, mfd, reg, mileage} = vehicleData;
 
     // Log the examiner activity
     console.log(`Examiner ${examinerData.username} is registering a new vehicle.`);
@@ -55,11 +55,11 @@ async function registerVehicleAndCreateUser(vehicleData, examinerData) {
     });
     await newVehicle.save();
 
-    return { newUser, newVehicle };
+    return {newUser, newVehicle};
 }
 
 // module.exports = {
 //     registerVehicleAndCreateUser
 // };
 
-module.exports = {  login, registerVehicleAndCreateUser };
+module.exports = {login, registerVehicleAndCreateUser};
