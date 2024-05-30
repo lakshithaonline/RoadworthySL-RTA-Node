@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const { MONGODB_URI } = require('../utils/constants');
+const {MONGODB_URI} = require('../utils/constants');
 const Admin = require('../models/admin');
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('Could not connect to MongoDB:', err));
 
 const seedAdmin = async () => {
     try {
-        const adminExists = await Admin.findOne({ username: 'adminUser' });
+        const adminExists = await Admin.findOne({username: 'adminUser'});
         if (adminExists) {
             console.log('Admin already exists in the database.');
             return;

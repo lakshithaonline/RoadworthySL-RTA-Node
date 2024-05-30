@@ -5,8 +5,6 @@ const vehicleController = require("../controllers/vehicleController");
 const appointmentController = require("../controllers/appointmentController");
 
 
-
-
 //Vehicle CRUD
 router.post('/vehicle-register', userMiddleware.verifyUserToken, vehicleController.registerVehicle); //tested
 

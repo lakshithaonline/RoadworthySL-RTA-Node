@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
-const { MONGODB_URI } = require("../utils/constants");
+const {MONGODB_URI} = require("../utils/constants");
 
 const connectDB = async (maxRetries = 5) => {
     let retries = 0;
     while (retries < maxRetries) {
         try {
-            const conn = await mongoose.connect(MONGODB_URI, {
-            });
+            const conn = await mongoose.connect(MONGODB_URI, {});
             console.log(`MongoDB Connected: ${conn.connection.host}`);
             break;
         } catch (err) {
