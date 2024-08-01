@@ -14,7 +14,7 @@ const vehicleSchema = new mongoose.Schema({
     mileage: Number,
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'  //this will work for only user vehicle creates
+        ref: 'User'  //this will work for only user vehicle creates
     },
 });
 
