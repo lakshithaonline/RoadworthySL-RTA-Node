@@ -1,7 +1,7 @@
-const {login, getAllUsers} = require('../services/ExaminerService');
+const {login, getAllUsers, getAllVehiclesWithOwners} = require('../services/ExaminerService');
 const examinerService = require("../services/ExaminerService");
 const appointmentService = require("../services/AppointmentService");
-
+const vehicleService = require("../services/ExaminerService");
 
 exports.loginExaminer = async (req, res) => {
     try {
@@ -52,3 +52,39 @@ exports.getAllUsers = async (req, res) => {
         res.status(500).json({ message: 'Error retrieving users' });
     }
 };
+
+
+exports.getAllVehicles = async (req, res) => {
+    try {
+        const vehicles = await vehicleService.getAllVehiclesWithOwners();
+        res.status(200).json(vehicles);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching vehicles', error: error.message });
+    }
+};
+
+exports.getAllUsersWithVehicles = async (req, res) => {
+    try {
+        const users = await getAllUsers();
+        const vehicles = await getAllVehiclesWithOwners();
+
+        const vehicleMap = vehicles.reduce((map, vehicle) => {
+            if (!map[vehicle.owner._id]) {
+                map[vehicle.owner._id] = [];
+            }
+            map[vehicle.owner._id].push(vehicle);
+            return map;
+        }, {});
+
+        const usersWithVehicles = users.map(user => ({
+            ...user.toObject(),
+            vehicles: vehicleMap[user._id] || []
+        }));
+
+        res.status(200).json(usersWithVehicles);
+    } catch (error) {
+        console.error('Error retrieving users with vehicles:', error.message);
+        res.status(500).json({ message: 'Error retrieving users with vehicles' });
+    }
+};
+
