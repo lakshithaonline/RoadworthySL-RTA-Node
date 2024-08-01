@@ -58,8 +58,15 @@ async function registerVehicleAndCreateUser(vehicleData, examinerData) {
     return {newUser, newVehicle};
 }
 
-// module.exports = {
-//     registerVehicleAndCreateUser
-// };
+// Service function to retrieve all users
+const getAllUsers = async () => {
+    try {
+        const users = await User.find({});
+        return users;
+    } catch (error) {
+        throw new Error('Error retrieving users');
+    }
+};
 
-module.exports = {login, registerVehicleAndCreateUser};
+
+module.exports = {login, registerVehicleAndCreateUser, getAllUsers};
