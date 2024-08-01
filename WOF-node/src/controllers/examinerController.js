@@ -1,5 +1,6 @@
-const {login} = require('../services/ExaminerService');
+const {login, getAllUsers} = require('../services/ExaminerService');
 const examinerService = require("../services/ExaminerService");
+const appointmentService = require("../services/AppointmentService");
 
 
 exports.loginExaminer = async (req, res) => {
@@ -29,5 +30,25 @@ exports.registerVehicleByExaminer = async (req, res) => {
     } catch (error) {
         console.error('Failed to register vehicle:', error);
         res.status(500).json({message: error.message});
+    }
+};
+
+exports.getAllBookedSlots = async (req, res) => {
+    try {
+        const slots = await appointmentService.getAllBookedSlots();
+        res.status(200).json(slots);
+    } catch (error) {
+        console.error('Error retrieving booked slots:', error.message);
+        res.status(500).json({message: 'Error retrieving booked slots.', error});
+    }
+};
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await getAllUsers();
+        res.status(200).json(users);
+    } catch (error) {
+        console.error('Error retrieving users:', error.message);
+        res.status(500).json({ message: 'Error retrieving users' });
     }
 };
