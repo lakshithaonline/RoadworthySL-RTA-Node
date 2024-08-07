@@ -6,6 +6,9 @@ const examinerController = require("../controllers/examinerController");
 
 router.post('/vehicle-register-by-examiner', examinerMiddleware.verifyToken, examinerController.registerVehicleByExaminer); //tested and work
 
+//FastAPI Python
+router.post('/predict', examinerMiddleware.verifyToken,  examinerController.predictVehicle);
+
 router.get('/bookedSlots', examinerMiddleware.verifyToken, examinerController.getAllBookedSlots);//tested and work
 
 router.get('/get-all-users', examinerMiddleware.verifyToken, examinerController.getAllUsers); //tested and work
