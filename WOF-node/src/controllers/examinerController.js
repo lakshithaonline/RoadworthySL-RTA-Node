@@ -2,6 +2,7 @@ const {login, getAllUsers, getAllVehiclesWithOwners} = require('../services/Exam
 const examinerService = require("../services/ExaminerService");
 const appointmentService = require("../services/AppointmentService");
 const vehicleService = require("../services/ExaminerService");
+const {getPrediction} = require("../services/pythonAPI");
 
 exports.loginExaminer = async (req, res) => {
     try {
@@ -85,6 +86,19 @@ exports.getAllUsersWithVehicles = async (req, res) => {
     } catch (error) {
         console.error('Error retrieving users with vehicles:', error.message);
         res.status(500).json({ message: 'Error retrieving users with vehicles' });
+    }
+};
+
+exports.predictVehicle = async (req, res) => {
+    try {
+        const data = req.body;
+        console.log('Received data:', data);
+
+        const result = await getPrediction(data);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error predicting vehicle:', error.message);
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 };
 
