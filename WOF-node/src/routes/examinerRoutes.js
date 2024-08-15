@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const examinerMiddleware = require("../middleware/examinerMiddleware");
-const inspectionMiddleware = require("../middleware/inspectionMiddleware");
 const examinerController = require("../controllers/examinerController");
 const wofController = require("../controllers/wofController");
 

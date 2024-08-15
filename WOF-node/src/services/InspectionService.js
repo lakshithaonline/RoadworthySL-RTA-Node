@@ -1,7 +1,6 @@
 
 const Vehicle = require('../models/vehicle');
 const User = require('../models/user');
-const Examiner = require('../models/examiner');
 const WOF = require("../models/wofInspection");
 
 // Create a new WOF record
