@@ -3,6 +3,7 @@ const router = express.Router();
 const userMiddleware = require("../middleware/userMiddleware");
 const vehicleController = require("../controllers/vehicleController");
 const appointmentController = require("../controllers/appointmentController");
+const wofController = require("../controllers/wofController");
 
 
 //Vehicle CRUD
@@ -26,5 +27,11 @@ router.get('/appointments', userMiddleware.verifyUserToken, appointmentControlle
 //get user's vehicle
 router.get('/vehicles', userMiddleware.verifyUserToken, appointmentController.getUserVehicles); //tested
 
+//WOF retrieve by user
+router.get('/get-all-wof-by-vehicle/:vehicleId', userMiddleware.verifyUserToken, wofController.getAllWOFS);
+
+router.get('/wofs-by-token', userMiddleware.verifyUserToken, wofController.getWOFSByToken);
+
+router.get('/inspection/:inspectionId/download', userMiddleware.verifyUserToken, wofController.downloadInspectionReport);
 
 module.exports = router;

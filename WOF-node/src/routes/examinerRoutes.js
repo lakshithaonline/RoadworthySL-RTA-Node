@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const examinerMiddleware = require("../middleware/examinerMiddleware");
+const inspectionMiddleware = require("../middleware/inspectionMiddleware");
 const examinerController = require("../controllers/examinerController");
+const wofController = require("../controllers/wofController");
 
 
 router.post('/vehicle-register-by-examiner', examinerMiddleware.verifyToken, examinerController.registerVehicleByExaminer); //tested and work
@@ -18,5 +20,12 @@ router.get('/get-all-vehicles-users',  examinerMiddleware.verifyToken, examinerC
 router.get('/get-all-users', examinerMiddleware.verifyToken, examinerController.getAllUsers); //tested and work
 
 router.get('/get-all-users-with-vehicles', examinerMiddleware.verifyToken, examinerController.getAllUsersWithVehicles); //tested and work
+
+
+
+router.post('/create-wof', examinerMiddleware.verifyToken, wofController.createWOF);
+
+router.get('/wof', examinerMiddleware.verifyToken, wofController.getAllWOFS);
+
 
 module.exports = router;

@@ -2,7 +2,7 @@ const {login, getAllUsers, getAllVehiclesWithOwners} = require('../services/Exam
 const examinerService = require("../services/ExaminerService");
 const appointmentService = require("../services/AppointmentService");
 const vehicleService = require("../services/ExaminerService");
-const {getPrediction} = require("../services/pythonAPI");
+const {getPrediction} = require("../services/PythonAPI");
 
 exports.loginExaminer = async (req, res) => {
     try {
