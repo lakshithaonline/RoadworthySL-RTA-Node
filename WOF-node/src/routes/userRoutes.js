@@ -4,7 +4,6 @@ const userMiddleware = require("../middleware/userMiddleware");
 const vehicleController = require("../controllers/vehicleController");
 const appointmentController = require("../controllers/appointmentController");
 const wofController = require("../controllers/wofController");
-const examinerMiddleware = require("../middleware/examinerMiddleware");
 const examinerController = require("../controllers/examinerController");
 
 
