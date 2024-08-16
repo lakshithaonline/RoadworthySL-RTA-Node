@@ -10,6 +10,7 @@ const highCriticalConcernSchema = new Schema({
 const wofSchema = new Schema({
     vehicle: { type: Schema.Types.ObjectId, ref: 'Vehicle', required: true },
     owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    examiner: { type: Schema.Types.ObjectId, ref: 'Examiner', required: true },
     ratings: {
         tyres: { type: Number, required: true },
         brakes: { type: Number, required: true },

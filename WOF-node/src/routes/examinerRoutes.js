@@ -26,5 +26,8 @@ router.post('/create-wof', examinerMiddleware.verifyToken, wofController.createW
 
 router.get('/wof', examinerMiddleware.verifyToken, wofController.getAllWOFS);
 
+//retrieve logged-in examiner details
+router.get('/details', examinerMiddleware.verifyToken , examinerController.getExaminerDetails);
+
 
 module.exports = router;
