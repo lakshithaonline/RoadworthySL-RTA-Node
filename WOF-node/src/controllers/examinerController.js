@@ -102,3 +102,13 @@ exports.predictVehicle = async (req, res) => {
     }
 };
 
+exports.getExaminerDetails = async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const examiner = await examinerService.getExaminerByToken(token);
+
+        res.status(200).json(examiner);
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving examiner details', error: error.message });
+    }
+};

@@ -2,9 +2,11 @@
 const Vehicle = require('../models/vehicle');
 const User = require('../models/user');
 const WOF = require("../models/wofInspection");
+const Examiner = require('../models/examiner');
+const {populate} = require("dotenv");
 
 // Create a new WOF record
-exports.createWOF = async (vehicleId, ownerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate) => {
+exports.createWOF = async (vehicleId, ownerId, examinerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate) => {
     try {
         const vehicle = await Vehicle.findById(vehicleId);
         if (!vehicle) {
@@ -16,9 +18,15 @@ exports.createWOF = async (vehicleId, ownerId, ratings, finalScore, outcome, hig
             throw new Error('Owner not found');
         }
 
+        const examiner = await Examiner.findById(examinerId);
+        if (!examiner) {
+            throw new Error('Examiner not found');
+        }
+
         const newWOF = new WOF({
             vehicle: vehicleId,
             owner: ownerId,
+            examiner: examinerId,
             ratings: ratings,
             finalScore: finalScore,
             outcome: outcome,
@@ -72,7 +80,8 @@ exports.getWOFSByOwnerId = async (ownerId) => {
     try {
         const wofs = await WOF.find({ owner: ownerId })
             .populate('vehicle', 'registrationNumber make model') // Populate vehicle details
-            .populate('owner', 'username email'); // Populate owner details if needed
+            .populate('owner', 'username email') // Populate owner details if needed
+            .populate('examiner', 'firstname email');
         return wofs;
     } catch (error) {
         throw new Error('Error retrieving WOF records: ' + error.message);

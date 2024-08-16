@@ -8,10 +8,10 @@ const {generateInspectionReport} = require("../services/InspectionReportService"
 
 exports.createWOF = async (req, res) => {
     try {
-        const { vehicleId, ownerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate } = req.body;
+        const { vehicleId, ownerId, examinerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate } = req.body;
 
-        if (!mongoose.Types.ObjectId.isValid(ownerId) || !mongoose.Types.ObjectId.isValid(vehicleId)) {
-            return res.status(400).json({ message: 'Invalid vehicle or owner ID' });
+        if (!mongoose.Types.ObjectId.isValid(ownerId) || !mongoose.Types.ObjectId.isValid(vehicleId) || !mongoose.Types.ObjectId.isValid(examinerId)) {
+            return res.status(400).json({ message: 'Invalid vehicle, owner, or examiner ID' });
         }
 
         const requiredFields = [
@@ -32,7 +32,7 @@ exports.createWOF = async (req, res) => {
             return res.status(400).json({ message: 'Invalid outcome value' });
         }
 
-        const newWOF = await wofService.createWOF(vehicleId, ownerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate);
+        const newWOF = await wofService.createWOF(vehicleId, ownerId, examinerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate);
 
         res.status(201).json({ message: 'WOF record created successfully', wof: newWOF });
     } catch (error) {

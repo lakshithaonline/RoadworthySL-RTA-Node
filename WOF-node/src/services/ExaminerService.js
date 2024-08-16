@@ -13,7 +13,7 @@ const login = async (username, password) => {
     const token = jwt.sign(
         { id: examiner._id, username: examiner.username, role: examiner.role }, // Include role in the JWT
         JWT_SECRET,
-        { expiresIn: '30m' }
+        { expiresIn: '60m' }
     );
     return token;
 };
@@ -68,5 +68,22 @@ const getAllVehiclesWithOwners = async () => {
     }
 };
 
+const getExaminerByToken = async (token) => {
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        const examinerId = decoded.id;
 
-module.exports = { login, registerVehicleAndCreateUser, getAllUsers, getAllVehiclesWithOwners };
+        const examiner = await Examiner.findById(examinerId).select('-password');
+
+        if (!examiner) {
+            throw new Error('Examiner not found');
+        }
+
+        return examiner;
+    } catch (error) {
+        throw new Error('Invalid token or token expired');
+    }
+};
+
+
+module.exports = { login, registerVehicleAndCreateUser, getAllUsers, getAllVehiclesWithOwners, getExaminerByToken  };
