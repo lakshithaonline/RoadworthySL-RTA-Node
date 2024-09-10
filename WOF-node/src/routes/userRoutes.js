@@ -5,6 +5,8 @@ const vehicleController = require("../controllers/vehicleController");
 const appointmentController = require("../controllers/appointmentController");
 const wofController = require("../controllers/wofController");
 const examinerController = require("../controllers/examinerController");
+const userController = require("../controllers/userController");
+const issueReportController = require("../controllers/issueReportController");
 
 
 //Vehicle CRUD
@@ -36,5 +38,17 @@ router.get('/wofs-by-token', userMiddleware.verifyUserToken, wofController.getWO
 router.get('/inspection/:inspectionId/download', userMiddleware.verifyUserToken, wofController.downloadInspectionReport);
 
 router.get('/details', userMiddleware.verifyUserToken , examinerController.getExaminerDetails);
+
+//user
+
+router.get('/by-token', userMiddleware.verifyUserToken, userController.getUserByToken);
+
+router.put('/update', userMiddleware.verifyUserToken, userController.updateUser);
+
+router.delete('/delete', userMiddleware.verifyUserToken, userController.deleteUser);
+
+//reports:
+
+router.post('/create-reports', userMiddleware.verifyUserToken, issueReportController.createIssueReport);
 
 module.exports = router;
