@@ -28,17 +28,14 @@ const loginUser = async (username, password) => {
     return token;
 };
 
-// Retrieve a user by ID
 const getUserById = async (userId) => {
     return User.findById(userId);
 };
 
-// Update a user by ID
 const updateUserById = async (userId, updateData) => {
     return User.findByIdAndUpdate(userId, updateData, {new: true});
 };
 
-// Delete a user by ID
 const deleteUserById = async (userId) => {
     return User.findByIdAndDelete(userId);
 };

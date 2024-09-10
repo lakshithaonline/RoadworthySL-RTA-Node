@@ -1,10 +1,7 @@
 const userService = require('../services/UserService');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
 const {registerUser, loginUser} = require("../services/UserService");
 const { JWT_SECRET } = require("../utils/constants");
 const {verify} = require("jsonwebtoken");
-const wofService = require("../services/InspectionService");
 
 exports.register = async (req, res) => {
     const {username, email, password, role} = req.body;
@@ -37,7 +34,7 @@ exports.getUserByToken = async (req, res) => {
         }
 
         const decoded = verify(token, JWT_SECRET);
-        const userId = decoded.id; // Assuming the ID is in the token payload
+        const userId = decoded.id;
 
         const user = await userService.getUserById(userId);
         res.status(200).json({ user });
@@ -47,7 +44,6 @@ exports.getUserByToken = async (req, res) => {
     }
 };
 
-// Update a user by ID
 exports.updateUser = async (req, res) => {
     try {
         const token = req.headers.authorization?.split(' ')[1];
@@ -56,7 +52,7 @@ exports.updateUser = async (req, res) => {
         }
 
         const decoded = verify(token, JWT_SECRET);
-        const userId = decoded.id; // Assuming the ID is in the token payload
+        const userId = decoded.id;
 
         if (!userId) {
             return res.status(401).json({ message: 'Invalid token' });
@@ -75,7 +71,6 @@ exports.updateUser = async (req, res) => {
 };
 
 
-// Delete a user by ID
 exports.deleteUser = async (req, res) => {
     try {
         const token = req.headers.authorization?.split(' ')[1];
@@ -84,7 +79,7 @@ exports.deleteUser = async (req, res) => {
         }
 
         const decoded = verify(token, JWT_SECRET);
-        const userId = decoded.id; // Assuming the ID is in the token payload
+        const userId = decoded.id;
 
         if (!userId) {
             return res.status(401).json({ message: 'Invalid token' });
