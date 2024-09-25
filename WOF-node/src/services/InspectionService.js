@@ -1,9 +1,8 @@
-
 const Vehicle = require('../models/vehicle');
 const User = require('../models/user');
 const WOF = require("../models/wofInspection");
 const Examiner = require('../models/examiner');
-const {populate} = require("dotenv");
+
 
 // Create a new WOF record
 exports.createWOF = async (vehicleId, ownerId, examinerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate, nextInspectionDate) => {
@@ -80,8 +79,8 @@ exports.deleteWOF = async (id) => {
 exports.getWOFSByOwnerId = async (ownerId) => {
     try {
         const wofs = await WOF.find({ owner: ownerId })
-            .populate('vehicle', 'registrationNumber make model') // Populate vehicle details
-            .populate('owner', 'username email') // Populate owner details if needed
+            .populate('vehicle', 'registrationNumber make model')
+            .populate('owner', 'username email')
             .populate('examiner', 'firstname email');
         return wofs;
     } catch (error) {
@@ -100,7 +99,6 @@ exports.getWOFSByExaminer = async (examinerId) => {
 
 exports.getWOFInspectionsByVehicleId = async (vehicleId) => {
     try {
-        // Find all WOF inspections for the given vehicle ID
         const inspections = await WOF.find({ vehicle: vehicleId }).populate('vehicle owner').exec();
         return inspections;
     } catch (error) {
