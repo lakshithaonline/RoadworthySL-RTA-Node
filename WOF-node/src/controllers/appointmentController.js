@@ -99,3 +99,40 @@ exports.getUserAppointments = async (req, res) => {
         res.status(500).json({message: 'Error retrieving user appointments.', error});
     }
 };
+
+// Edit Appointment
+exports.editAppointment = async (req, res) => {
+    try {
+        const { appointmentId } = req.params;
+        const { date, time } = req.body;
+
+        const updatedAppointment = await appointmentService.editAppointment(appointmentId, { date, time });
+
+        if (!updatedAppointment) {
+            return res.status(404).json({ message: 'Appointment not found' });
+        }
+
+        res.status(200).json({ message: 'Appointment updated successfully.', updatedAppointment });
+    } catch (error) {
+        console.error('Error updating appointment:', error.message);
+        res.status(500).json({ message: 'Error updating appointment', error });
+    }
+};
+
+//Delete Appointment
+exports.deleteAppointment = async (req, res) => {
+    try {
+        const { appointmentId } = req.params;
+
+        const appointment = await appointmentService.deleteAppointment(appointmentId);
+
+        if (!appointment) {
+            return res.status(404).json({ message: 'Appointment not found' });
+        }
+
+        res.status(200).json({ message: 'Appointment deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting appointment:', error.message);
+        res.status(500).json({ message: 'Error deleting appointment', error });
+    }
+};

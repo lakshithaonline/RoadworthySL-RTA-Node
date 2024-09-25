@@ -27,6 +27,13 @@ router.get('/bookedSlots', appointmentController.getAllBookedSlots); //tested
 
 router.get('/appointments', userMiddleware.verifyUserToken, appointmentController.getUserAppointments); //tested
 
+// Edit an appointment
+router.put('/edit-appointment/:appointmentId', userMiddleware.verifyUserToken, appointmentController.editAppointment);
+
+// Delete an appointment
+router.delete('/delete-appointment/:appointmentId', userMiddleware.verifyUserToken, appointmentController.deleteAppointment);
+
+
 //get user's vehicle
 router.get('/vehicles', userMiddleware.verifyUserToken, appointmentController.getUserVehicles); //tested
 

@@ -31,3 +31,13 @@ exports.getAllBookedSlots = async () => {
 exports.getUserAppointments = async (userId) => {
     return await Appointment.find({ userId });
 };
+
+// Edit an existing appointment
+exports.editAppointment = async (appointmentId, appointmentData) => {
+    return await Appointment.findByIdAndUpdate(appointmentId, appointmentData, { new: true });
+};
+
+// Delete an appointment by ID
+exports.deleteAppointment = async (appointmentId) => {
+    return await Appointment.findByIdAndDelete(appointmentId);
+};
