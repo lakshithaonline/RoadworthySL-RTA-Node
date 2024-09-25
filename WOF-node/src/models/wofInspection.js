@@ -29,7 +29,8 @@ const wofSchema = new Schema({
     finalScore: { type: Number, required: true },
     outcome: { type: Number, enum: [0, 1], required: true }, // 0 or 1
     highCriticalConcerns: [highCriticalConcernSchema],
-    inspectionDate: { type: Date, required: true }
+    inspectionDate: { type: Date, required: true },
+    nextInspectionDate: { type: Date, required: true },
 });
 
 const WOF = mongoose.model('WOF', wofSchema);
