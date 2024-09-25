@@ -8,7 +8,7 @@ const {generateInspectionReport} = require("../services/InspectionReportService"
 
 exports.createWOF = async (req, res) => {
     try {
-        const { vehicleId, ownerId, examinerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate } = req.body;
+        const { vehicleId, ownerId, examinerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate, nextInspectionDate  } = req.body;
 
         if (!mongoose.Types.ObjectId.isValid(ownerId) || !mongoose.Types.ObjectId.isValid(vehicleId) || !mongoose.Types.ObjectId.isValid(examinerId)) {
             return res.status(400).json({ message: 'Invalid vehicle, owner, or examiner ID' });
@@ -25,14 +25,14 @@ exports.createWOF = async (req, res) => {
                 return res.status(400).json({ message: `Missing value for ${field}` });
             }
         }
-        if (!inspectionDate) {
-            return res.status(400).json({ message: 'Missing inspectionDate' });
+        if (!inspectionDate || !nextInspectionDate) {
+            return res.status(400).json({ message: 'Missing inspection or next inspection date' });
         }
         if (outcome !== 0 && outcome !== 1) {
             return res.status(400).json({ message: 'Invalid outcome value' });
         }
 
-        const newWOF = await wofService.createWOF(vehicleId, ownerId, examinerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate);
+        const newWOF = await wofService.createWOF(vehicleId, ownerId, examinerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate, nextInspectionDate);
 
         res.status(201).json({ message: 'WOF record created successfully', wof: newWOF });
     } catch (error) {

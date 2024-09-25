@@ -6,7 +6,7 @@ const Examiner = require('../models/examiner');
 const {populate} = require("dotenv");
 
 // Create a new WOF record
-exports.createWOF = async (vehicleId, ownerId, examinerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate) => {
+exports.createWOF = async (vehicleId, ownerId, examinerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate, nextInspectionDate) => {
     try {
         const vehicle = await Vehicle.findById(vehicleId);
         if (!vehicle) {
@@ -31,7 +31,8 @@ exports.createWOF = async (vehicleId, ownerId, examinerId, ratings, finalScore, 
             finalScore: finalScore,
             outcome: outcome,
             highCriticalConcerns: highCriticalConcerns,
-            inspectionDate: inspectionDate
+            inspectionDate: inspectionDate,
+            nextInspectionDate: nextInspectionDate
         });
 
         await newWOF.save();
