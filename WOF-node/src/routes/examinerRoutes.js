@@ -3,6 +3,7 @@ const router = express.Router();
 const examinerMiddleware = require("../middleware/examinerMiddleware");
 const examinerController = require("../controllers/examinerController");
 const wofController = require("../controllers/wofController");
+const appointmentController = require("../controllers/appointmentController");
 
 
 router.post('/vehicle-register-by-examiner', examinerMiddleware.verifyToken, examinerController.registerVehicleByExaminer); //tested and work
@@ -25,6 +26,14 @@ router.get('/get-all-users-with-vehicles', examinerMiddleware.verifyToken, exami
 router.post('/create-wof', examinerMiddleware.verifyToken, wofController.createWOF);
 
 router.get('/wof', examinerMiddleware.verifyToken, wofController.getAllWOFS);
+
+router.get('/wof-by-logged-in-examiner', examinerMiddleware.verifyToken, wofController.getWOFsByLoggedInExaminer);
+
+// Route to approve an appointment by ID
+router.post('/approve-appointment/:id', examinerMiddleware.verifyToken, appointmentController.approveAppointment);
+
+// Route to get all approved appointments for the examiner
+router.get('/appointments', examinerMiddleware.verifyToken, appointmentController.getExaminerAppointments);
 
 //retrieve logged-in examiner details
 router.get('/details', examinerMiddleware.verifyToken , examinerController.getExaminerDetails);

@@ -6,6 +6,7 @@ const examinerMiddleware = require("../middleware/examinerMiddleware");
 
 // re locate as needed this routes, this route file not setup/confined to route
 
+//please use this routes as you need this place will not work:
 
 // Route to get all WOF records for the logged-in user
 router.get('/wof', examinerMiddleware.verifyToken, wofController.getAllWOFS);
@@ -14,7 +15,7 @@ router.get('/wof', examinerMiddleware.verifyToken, wofController.getAllWOFS);
 router.get('/wof/:id', examinerMiddleware.verifyToken, wofController.getWOFById);
 
 // Get WOF records by logged-in examiner
-router.get('/wof-by-logged-in-examiner', examinerMiddleware.verifyToken, wofController.getWOFsByLoggedInExaminer);
+// router.get('/wof-by-logged-in-examiner', examinerMiddleware.verifyToken, wofController.getWOFsByLoggedInExaminer); //moved for examiner routes file
 
 // Get WOF records by a specific examiner ID
 router.get('/wof-by-examiner/:examinerId', examinerMiddleware.verifyToken, wofController.getWOFSByExaminerId);
