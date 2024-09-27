@@ -32,6 +32,19 @@ exports.getUserAppointments = async (userId) => {
     return await Appointment.find({ userId });
 };
 
+// New method to approve an appointment
+exports.approveAppointment = async (appointmentId, examinerId) => {
+    return await Appointment.findByIdAndUpdate(appointmentId, {
+        approved: true,
+        examinerId: examinerId
+    }, { new: true });
+};
+
+// New method to get appointments assigned to a specific examiner
+exports.getAppointmentsForExaminer = async (examinerId) => {
+    return await Appointment.find({ examinerId });
+};
+
 // Edit an existing appointment
 exports.editAppointment = async (appointmentId, appointmentData) => {
     return await Appointment.findByIdAndUpdate(appointmentId, appointmentData, { new: true });

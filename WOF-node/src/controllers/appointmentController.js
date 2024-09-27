@@ -100,6 +100,47 @@ exports.getUserAppointments = async (req, res) => {
     }
 };
 
+// New controller method to approve an appointment
+exports.approveAppointment = async (req, res) => {
+    try {
+        const { id } = req.params; // Changed from { appointmentId } to { id }
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+        const decoded = verify(token, JWT_SECRET);
+        const examinerId = decoded.id; // Assuming the token contains the examiner's ID
+
+        const approvedAppointment = await appointmentService.approveAppointment(id, examinerId); // Using 'id' here
+        if (!approvedAppointment) {
+            return res.status(404).json({ message: 'Appointment not found' });
+        }
+
+        res.status(200).json({ message: 'Appointment approved successfully.', approvedAppointment });
+    } catch (error) {
+        console.error('Error approving appointment:', error.message);
+        res.status(500).json({ message: 'Error approving appointment', error });
+    }
+};
+
+
+exports.getExaminerAppointments = async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+        const decoded = verify(token, JWT_SECRET);
+        const examinerId = decoded.id; // Assuming the token contains the examiner's ID
+
+        const appointments = await appointmentService.getAppointmentsForExaminer(examinerId);
+        res.status(200).json(appointments);
+    } catch (error) {
+        console.error('Error retrieving examiner appointments:', error.message);
+        res.status(500).json({ message: 'Error retrieving examiner appointments', error });
+    }
+};
+
 // Edit Appointment
 exports.editAppointment = async (req, res) => {
     try {
