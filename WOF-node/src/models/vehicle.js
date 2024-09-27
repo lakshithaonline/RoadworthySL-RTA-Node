@@ -16,7 +16,7 @@ const vehicleSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'  //this will work for only user vehicle creates
     },
-});
+}, { timestamps: true });
 
 const Vehicle = mongoose.model('Vehicle', vehicleSchema);
 
