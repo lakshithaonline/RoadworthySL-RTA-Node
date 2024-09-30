@@ -3,6 +3,7 @@ const examinerService = require("../services/ExaminerService");
 const appointmentService = require("../services/AppointmentService");
 const vehicleService = require("../services/ExaminerService");
 const {getPrediction} = require("../services/PythonAPI");
+const { body, validationResult } = require('express-validator');
 
 exports.loginExaminer = async (req, res) => {
     try {
@@ -16,23 +17,35 @@ exports.loginExaminer = async (req, res) => {
     }
 };
 
-exports.registerVehicleByExaminer = async (req, res) => {
-    try {
-        const vehicleData = req.body;
-        const examinerData = req.user;
+exports.registerVehicleByExaminer = [
+    body('registrationNumber').not().isEmpty().withMessage('Registration number is required'),
+    body('make').not().isEmpty().withMessage('Make is required'),
+    body('model').not().isEmpty().withMessage('Model is required'),
+    body('vinNumber').not().isEmpty().withMessage('VIN Number is required'),
 
-        const {newUser, newVehicle} = await examinerService.registerVehicleAndCreateUser(vehicleData, examinerData);
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
 
-        res.status(201).json({
-            message: 'Vehicle and user created successfully',
-            user: newUser,
-            vehicle: newVehicle
-        });
-    } catch (error) {
-        console.error('Failed to register vehicle:', error);
-        res.status(500).json({message: error.message});
+        try {
+            const vehicleData = req.body;
+            const examinerData = req.user;
+
+            const { newUser, newVehicle } = await examinerService.registerVehicleAndCreateUser(vehicleData, examinerData);
+
+            res.status(201).json({
+                message: 'Vehicle and user created successfully',
+                user: newUser,
+                vehicle: newVehicle
+            });
+        } catch (error) {
+            console.error('Failed to register vehicle:', error);
+            res.status(500).json({ message: error.message });
+        }
     }
-};
+];
 
 exports.getAllBookedSlots = async (req, res) => {
     try {
