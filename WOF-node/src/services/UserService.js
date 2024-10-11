@@ -3,13 +3,16 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const {JWT_SECRET} = require('../utils/constants');
 
-const registerUser = async (username, email, password, role) => {
-    const existingUser = await User.findOne({$or: [{username}, {email}]});
+const registerUser = async (username, email, password, role, firstName, lastName, profilePicture, dateOfBirth) => {
+    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
         throw new Error('User already exists');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({username, email, password: hashedPassword, role});
+    const newUser = new User({
+        username, email, password: hashedPassword, role, firstName, lastName, profilePicture, dateOfBirth
+    });
+
     await newUser.save();
     return newUser;
 };
