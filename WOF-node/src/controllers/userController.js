@@ -15,7 +15,6 @@ exports.register = async (req, res) => {
     }
 };
 
-
 exports.login = async (req, res) => {
     const {username, password} = req.body;
     try {
@@ -26,7 +25,6 @@ exports.login = async (req, res) => {
         res.status(401).json({message: error.message});
     }
 };
-
 
 exports.getUserByToken = async (req, res) => {
     try {
