@@ -4,15 +4,17 @@ const { JWT_SECRET } = require("../utils/constants");
 const {verify} = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
-    const {username, email, password, role} = req.body;
+    const { username, email, password, role, firstName, lastName, profilePicture, dateOfBirth } = req.body;
     try {
-        const newUser = await registerUser(username, email, password, role);
-        res.status(201).json({message: 'User registered successfully', user: newUser});
+        const newUser = await registerUser(username, email, password, role, firstName, lastName, profilePicture, dateOfBirth);
+
+        res.status(201).json({ message: 'User registered successfully', user: newUser });
     } catch (error) {
         console.error('Error registering user:', error.message);
-        res.status(400).json({message: error.message});
+        res.status(400).json({ message: error.message });
     }
 };
+
 
 exports.login = async (req, res) => {
     const {username, password} = req.body;
