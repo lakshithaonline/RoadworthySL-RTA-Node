@@ -46,7 +46,8 @@ exports.createAppointment = async (req, res) => {
             vehicleId: vehicle._id,
             registrationNumber,
             date,
-            time
+            time,
+            completed: false
         };
         const appointment = await appointmentService.bookAppointment(appointmentData);
         res.status(201).json({message: 'Appointment booked successfully.', appointment});
@@ -177,3 +178,50 @@ exports.deleteAppointment = async (req, res) => {
         res.status(500).json({ message: 'Error deleting appointment', error });
     }
 };
+
+exports.updateAppointmentCompletion = async (req, res) => {
+    try {
+        // Extract token and verify it
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+
+        const decoded = verify(token, JWT_SECRET);
+        const examinerIdFromToken = decoded.id; // Extract the examiner ID from the token
+
+        // Extract appointment ID from the request parameters
+        const { appointmentId } = req.params; // Change this line to read from params
+        if (!appointmentId) {
+            return res.status(400).json({ message: 'Appointment ID is required' });
+        }
+
+        // Find the appointment by its ID
+        const appointment = await appointmentService.getAppointmentById(appointmentId);
+        if (!appointment) {
+            return res.status(404).json({ message: 'Appointment not found' });
+        }
+
+        // Ensure the appointment has been assigned to an examiner
+        if (!appointment.examinerId) {
+            return res.status(403).json({ message: 'Appointment has not been assigned to an examiner' });
+        }
+
+        // Check if the logged-in examiner is authorized to update the completion status
+        if (appointment.examinerId.toString() !== examinerIdFromToken) {
+            return res.status(403).json({ message: 'You are not authorized to complete this appointment' });
+        }
+
+        // Update the completed status to true
+        const updatedAppointment = await appointmentService.updateAppointmentCompletion(appointmentId, { completed: true });
+
+        res.status(200).json({
+            message: 'Appointment marked as completed successfully',
+            appointment: updatedAppointment
+        });
+    } catch (error) {
+        console.error('Error updating appointment completion:', error.message);
+        res.status(500).json({ message: 'Error updating appointment completion', error: error.message });
+    }
+};
+
