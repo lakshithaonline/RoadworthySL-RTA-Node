@@ -13,7 +13,7 @@ const login = async (username, password) => {
     const token = jwt.sign(
         { id: examiner._id, username: examiner.username, role: examiner.role }, // Include role in the JWT
         JWT_SECRET,
-        { expiresIn: '60m' }
+        { expiresIn: '10h' }
     );
     return token;
 };
