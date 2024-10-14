@@ -1,24 +1,34 @@
 const vehicleService = require('../services/VehicleService');
 const {JWT_SECRET} = require("../utils/constants");
 const {verify} = require("jsonwebtoken");
+const {restorePreviousWOFs, moveWOFsToPrevious} = require("./wofController");
 
 exports.registerVehicle = async (req, res) => {
     try {
-        const {registrationNumber, make, model, vinNumber, mfd, reg, mileage} = req.body;
-        const ownerId = req.user.id // Assuming the examiner ID is stored in req.user.id after authentication
-        const newVehicle = await vehicleService.registerVehicle(registrationNumber, make, model, vinNumber, mfd, reg, mileage, ownerId);
-        res.status(201).json({message: 'Vehicle registered successfully', vehicle: newVehicle});
+        const { registrationNumber, make, model, vinNumber, mfd, reg, mileage } = req.body;
+        const ownerId = req.user.id; // Assuming the owner ID is stored in req.user.id after authentication
+
+        // Register the new vehicle
+        const newVehicle = await vehicleService.registerVehicle(
+            registrationNumber, make, model, vinNumber, mfd, reg, mileage, ownerId
+        );
+
+        // Check and restore any previous WOFs
+        await restorePreviousWOFs(newVehicle._id, registrationNumber);
+
+        res.status(201).json({ message: 'Vehicle registered successfully', vehicle: newVehicle });
     } catch (error) {
         console.error('Error registering vehicle:', error.message);
-        res.status(400).json({message: error.message});
+        res.status(400).json({ message: error.message });
     }
 };
+
 
 exports.updateVehicle = async (req, res) => {
     try {
         const {registrationNumber} = req.params;
-        const {make, model} = req.body;
-        const updatedVehicle = await vehicleService.updateVehicle(registrationNumber, make, model);
+        const {make, model, vinNumber} = req.body;
+        const updatedVehicle = await vehicleService.updateVehicle(registrationNumber, make, model, vinNumber);
         res.status(200).json({message: 'Vehicle updated successfully', vehicle: updatedVehicle});
     } catch (error) {
         console.error('Error updating vehicle:', error.message);
@@ -28,14 +38,24 @@ exports.updateVehicle = async (req, res) => {
 
 exports.deleteVehicle = async (req, res) => {
     try {
-        const {registrationNumber} = req.params;
+        const { registrationNumber } = req.params;
+
+        // Find the vehicle to delete
         const deletedVehicle = await vehicleService.deleteVehicle(registrationNumber);
-        res.status(200).json({message: 'Vehicle deleted successfully', vehicle: deletedVehicle});
+        if (!deletedVehicle) {
+            return res.status(404).json({ message: 'Vehicle not found' });
+        }
+
+        // Move associated WOFs to the previousWOFs collection
+        await moveWOFsToPrevious(deletedVehicle._id, registrationNumber);
+
+        res.status(200).json({ message: 'Vehicle deleted successfully', vehicle: deletedVehicle });
     } catch (error) {
         console.error('Error deleting vehicle:', error.message);
-        res.status(400).json({message: error.message});
+        res.status(400).json({ message: error.message });
     }
 };
+
 
 exports.viewVehicle = async (req, res) => {
     try {
