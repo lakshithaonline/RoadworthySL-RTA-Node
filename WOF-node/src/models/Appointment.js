@@ -32,6 +32,10 @@ const appointmentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Examiner',
         default: null // Will store the ID of the examiner who approved the appointment
+    },
+    completed: {
+        type: Boolean,
+        default: false // Indicates whether the appointment is completed
     }
 });
 
