@@ -3,6 +3,8 @@ const { JWT_SECRET } = require("../utils/constants");
 const { verify } = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const {generateInspectionReport} = require("../services/InspectionReportService");
+const PreviousWOF = require("../models/previousWOFs");
+const WOF = require("../models/wofInspection");
 
 
 
@@ -157,7 +159,6 @@ exports.getWOFInspectionsByVehicleId = async (req, res) => {
     }
 };
 
-
 exports.downloadInspectionReport = async (req, res) => {
     try {
         const { inspectionId } = req.params;
@@ -173,4 +174,47 @@ exports.downloadInspectionReport = async (req, res) => {
         res.status(500).json({ error: 'Failed to generate report' });
     }
 };
+
+exports.moveWOFsToPrevious = async (vehicleId, registrationNumber) => {
+    // Find WOFs associated with the vehicle
+    const wofsToMove = await WOF.find({ vehicle: vehicleId });
+
+    // Add registrationNumber to WOFs and move them to previousWOFs collection
+    const previousWOFs = wofsToMove.map(wof => ({
+        ...wof.toObject(),  // Convert mongoose document to plain JavaScript object
+        vehicle: null,      // Set vehicle reference to null
+        registrationNumber, // Add the registration number for future matching
+    }));
+
+    // Insert into previousWOFs collection
+    await PreviousWOF.insertMany(previousWOFs);
+
+    // Delete original WOFs
+    await WOF.deleteMany({ vehicle: vehicleId });
+};
+
+exports.restorePreviousWOFs = async (newVehicleId, registrationNumber) => {
+    // Find previous WOFs with the matching registration number
+    const previousWOFs = await PreviousWOF.find({ registrationNumber });
+
+    if (previousWOFs.length === 0) {
+        // No previous WOFs found for this registration number
+        return;
+    }
+
+    // Update the WOFs to reference the new vehicle
+    const restoredWOFs = previousWOFs.map(wof => ({
+        ...wof.toObject(),  // Convert to plain JavaScript object
+        vehicle: newVehicleId, // Set new vehicle ID
+        registrationNumber: undefined, // Remove registrationNumber field
+    }));
+
+    // Insert back into WOF collection
+    await WOF.insertMany(restoredWOFs);
+
+    // Remove from previousWOFs collection
+    await PreviousWOF.deleteMany({ registrationNumber });
+};
+
+
 

@@ -13,8 +13,8 @@ exports.registerVehicle = async (registrationNumber, make, model, vinNumber, mfd
     return newVehicle;
 };
 
-exports.updateVehicle = async (registrationNumber, make, model) => {
-    const updatedVehicle = await Vehicle.findOneAndUpdate({ registrationNumber }, { make, model }, { new: true });
+exports.updateVehicle = async (registrationNumber, make, model, vinNumber) => {
+    const updatedVehicle = await Vehicle.findOneAndUpdate({ registrationNumber }, { make, model, vinNumber }, { new: true });
     if (!updatedVehicle) {
         throw new Error('Vehicle not found');
     }
