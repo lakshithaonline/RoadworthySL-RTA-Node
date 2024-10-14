@@ -35,6 +35,8 @@ router.post('/approve-appointment/:id', examinerMiddleware.verifyToken, appointm
 // Route to get all approved appointments for the examiner
 router.get('/appointments', examinerMiddleware.verifyToken, appointmentController.getExaminerAppointments);
 
+router.patch('/complete-appointment/:appointmentId', examinerMiddleware.verifyToken, appointmentController.updateAppointmentCompletion);
+
 //retrieve logged-in examiner details
 router.get('/details', examinerMiddleware.verifyToken , examinerController.getExaminerDetails);
 

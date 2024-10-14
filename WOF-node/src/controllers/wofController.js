@@ -6,8 +6,6 @@ const {generateInspectionReport} = require("../services/InspectionReportService"
 const PreviousWOF = require("../models/previousWOFs");
 const WOF = require("../models/wofInspection");
 
-
-
 exports.createWOF = async (req, res) => {
     try {
         const { vehicleId, ownerId, examinerId, ratings, finalScore, outcome, highCriticalConcerns, inspectionDate, nextInspectionDate  } = req.body;

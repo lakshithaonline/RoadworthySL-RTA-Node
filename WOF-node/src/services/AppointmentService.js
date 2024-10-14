@@ -54,3 +54,13 @@ exports.editAppointment = async (appointmentId, appointmentData) => {
 exports.deleteAppointment = async (appointmentId) => {
     return await Appointment.findByIdAndDelete(appointmentId);
 };
+
+// Fetch appointment by ID
+exports.getAppointmentById = async (appointmentId) => {
+    return await Appointment.findById(appointmentId);
+};
+
+// Update appointment's completion status
+exports.updateAppointmentCompletion = async (appointmentId, updateData) => {
+    return await Appointment.findByIdAndUpdate(appointmentId, updateData, { new: true });
+};
