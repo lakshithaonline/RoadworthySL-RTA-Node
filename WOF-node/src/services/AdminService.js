@@ -42,4 +42,20 @@ const createExaminer = async (username, password, email, firstname, lastname, br
     return newExaminer;
 };
 
-module.exports = { createExaminer, loginAdmin };
+const updateExaminer = async (id, updateData) => {
+    const updatedExaminer = await Examiner.findByIdAndUpdate(id, updateData, { new: true });
+    if (!updatedExaminer) {
+        throw new Error('Examiner not found');
+    }
+    return updatedExaminer;
+};
+
+const deleteExaminer = async (id) => {
+    const deletedExaminer = await Examiner.findByIdAndDelete(id);
+    if (!deletedExaminer) {
+        throw new Error('Examiner not found');
+    }
+    return deletedExaminer;
+};
+
+module.exports = { createExaminer, loginAdmin, updateExaminer, deleteExaminer };

@@ -86,6 +86,29 @@ exports.getVehiclesByToken = async (req, res) => {
     }
 };
 
+exports.getAllVehiclesWithDetails = async (req, res) => {
+    try {
+        const vehicles = await vehicleService.getVehiclesWithDetails();
+
+        if (!vehicles || vehicles.length === 0) {
+            return res.status(404).json({ message: 'No vehicles found' });
+        }
+
+        res.status(200).json(vehicles);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.getAllVehicles = async (req, res) => {
+    try {
+        const vehicles = await vehicleService.getAllVehicles();
+        res.status(200).json(vehicles);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 
 // exports.registerVehicleByExaminer = async (req, res) => {
 //     try {

@@ -2,6 +2,7 @@ const appointmentService = require('../services/AppointmentService');
 const vehicleService = require('../services/VehicleService');
 const {verify} = require("jsonwebtoken");
 const {JWT_SECRET} = require("../utils/constants");
+const {getAllAppointments} = require("../services/AppointmentService");
 
 exports.createAppointment = async (req, res) => {
     try {
@@ -222,6 +223,29 @@ exports.updateAppointmentCompletion = async (req, res) => {
     } catch (error) {
         console.error('Error updating appointment completion:', error.message);
         res.status(500).json({ message: 'Error updating appointment completion', error: error.message });
+    }
+};
+
+exports.getAppointments = async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+
+        const decoded = verify(token, JWT_SECRET);
+
+        const userRole = decoded.role;
+
+        if (userRole !== 'admin') {
+            return res.status(403).json({ message: 'Access denied. Insufficient permissions.' });
+        }
+
+        const appointments = await getAllAppointments();
+        return res.status(200).json(appointments);
+    } catch (error) {
+        console.error('Error retrieving appointments:', error.message);
+        return res.status(500).json({ message: error.message });
     }
 };
 

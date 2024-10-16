@@ -59,6 +59,16 @@ const getAllUsers = async () => {
     }
 };
 
+const getAllExaminers = async () => {
+    try {
+        const examiner = await Examiner.find();
+        return examiner;
+    } catch (error) {
+        throw new Error('Failed to retrieve users: ' + error.message);
+    }
+};
+
+
 const getAllVehiclesWithOwners = async () => {
     try {
         const vehicles = await Vehicle.find().populate('owner', 'username');
@@ -86,4 +96,4 @@ const getExaminerByToken = async (token) => {
 };
 
 
-module.exports = { login, registerVehicleAndCreateUser, getAllUsers, getAllVehiclesWithOwners, getExaminerByToken  };
+module.exports = { login, registerVehicleAndCreateUser, getAllExaminers, getAllUsers, getAllVehiclesWithOwners, getExaminerByToken  };

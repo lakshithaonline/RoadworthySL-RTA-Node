@@ -42,6 +42,22 @@ exports.getVehiclesByOwnerId = async (ownerId) => {
     return vehicles;
 };
 
+exports.getVehiclesWithDetails = async () => {
+    try {
+        const vehicles = await Vehicle.find()
+            .populate('owner', 'firstName lastName email')
+
+
+        return vehicles;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+exports.getAllVehicles = async () => {
+    const vehicles = await Vehicle.find();
+    return vehicles;
+};
 
 //
 // //vehicle added by examiner
