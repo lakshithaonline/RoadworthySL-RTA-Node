@@ -31,6 +31,15 @@ const loginUser = async (username, password) => {
     return token;
 };
 
+const getAllUsers = async () => {
+    try {
+        const users = await User.find();
+        return users;
+    } catch (error) {
+        throw new Error('Failed to retrieve users: ' + error.message);
+    }
+};
+
 const getUserById = async (userId) => {
     return User.findById(userId);
 };
@@ -43,6 +52,6 @@ const deleteUserById = async (userId) => {
     return User.findByIdAndDelete(userId);
 };
 
-module.exports = {registerUser, loginUser, getUserById, updateUserById, deleteUserById};
+module.exports = {registerUser, loginUser, getAllUsers, getUserById, updateUserById, deleteUserById};
 
 

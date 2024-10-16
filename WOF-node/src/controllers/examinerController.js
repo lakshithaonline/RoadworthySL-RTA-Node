@@ -1,4 +1,4 @@
-const {login, getAllUsers, getAllVehiclesWithOwners} = require('../services/ExaminerService');
+const {login, getAllUsers, getAllVehiclesWithOwners, getAllExaminers} = require('../services/ExaminerService');
 const examinerService = require("../services/ExaminerService");
 const appointmentService = require("../services/AppointmentService");
 const vehicleService = require("../services/ExaminerService");
@@ -56,6 +56,16 @@ exports.getAllBookedSlots = async (req, res) => {
         res.status(500).json({message: 'Error retrieving booked slots.', error});
     }
 };
+
+exports.getAllExaminers = async (req, res) => {
+    try {
+        const examiner = await getAllExaminers();
+        res.status(200).json(examiner);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 exports.getAllUsers = async (req, res) => {
     try {
