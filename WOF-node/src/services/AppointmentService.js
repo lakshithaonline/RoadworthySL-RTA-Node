@@ -64,3 +64,15 @@ exports.getAppointmentById = async (appointmentId) => {
 exports.updateAppointmentCompletion = async (appointmentId, updateData) => {
     return await Appointment.findByIdAndUpdate(appointmentId, updateData, { new: true });
 };
+
+exports.getAllAppointments = async () => {
+    try {
+        const appointments = await Appointment.find()
+            .populate('userId', 'firstname lastname')
+            .populate('vehicleId', 'registrationNumber')
+            .populate('examinerId', 'firstname lastname');
+        return appointments;
+    } catch (error) {
+        throw new Error('Failed to retrieve appointments: ' + error.message);
+    }
+};
