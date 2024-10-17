@@ -24,12 +24,17 @@ const registerVehicleAndCreateUser = async (vehicleData, examinerData) => {
 
     const defaultUsername = `user_${registrationNumber.toLowerCase()}`;
     const defaultEmail = `${defaultUsername}@example.com`;
-    const defaultPassword = await bcrypt.hash('defaultPassword123', 10); // Use a more secure password generation method
+    const defaultPassword = await bcrypt.hash('defaultPassword123', 10);
+    const defaultFirstName = make.length > 0 ? make.split(' ')[0] : 'DefaultFirst';
+    const defaultLastName = model.length > 0 ? model.split(' ')[0] : 'DefaultLast';
 
     const newUser = new User({
         username: defaultUsername,
         email: defaultEmail,
         password: defaultPassword,
+        firstName: defaultFirstName,
+        lastName: defaultLastName,
+        profilePicture: 'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png',
         role: 'user'
     });
     await newUser.save();
