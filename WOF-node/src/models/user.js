@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     lastName: { type: String, required: false },
     profilePicture: { type: String, required: false },
     dateOfBirth: { type: Date }
-});
+}, { timestamps: true });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 
