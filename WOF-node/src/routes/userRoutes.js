@@ -34,9 +34,6 @@ router.put('/edit-appointment/:appointmentId', userMiddleware.verifyUserToken, a
 router.delete('/delete-appointment/:appointmentId', userMiddleware.verifyUserToken, appointmentController.deleteAppointment);
 
 
-//get user's vehicle
-router.get('/vehicles', userMiddleware.verifyUserToken, appointmentController.getUserVehicles); //tested
-
 //WOF retrieve by user
 router.get('/get-all-wof-by-vehicle/:vehicleId', userMiddleware.verifyUserToken, wofController.getAllWOFS);
 

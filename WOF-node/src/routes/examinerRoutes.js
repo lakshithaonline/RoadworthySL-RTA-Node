@@ -17,8 +17,6 @@ router.get('/get-all-users', examinerMiddleware.verifyToken, examinerController.
 
 router.get('/get-all-vehicles-users',  examinerMiddleware.verifyToken, examinerController.getAllVehicles); //tested and work
 
-router.get('/get-all-users', examinerMiddleware.verifyToken, examinerController.getAllUsers); //tested and work
-
 router.get('/get-all-users-with-vehicles', examinerMiddleware.verifyToken, examinerController.getAllUsersWithVehicles); //tested and work
 
 

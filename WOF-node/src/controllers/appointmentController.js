@@ -58,23 +58,6 @@ exports.createAppointment = async (req, res) => {
     }
 };
 
-exports.getUserVehicles = async (req, res) => {
-    try {
-        const token = req.headers.authorization?.split(' ')[1];
-        if (!token) {
-            return res.status(401).json({message: 'No token provided'});
-        }
-        const decoded = verify(token, JWT_SECRET);
-        const userId = decoded.id;
-
-        const vehicles = await vehicleService.getVehiclesByOwnerId(userId);
-        res.status(200).json({vehicles});
-    } catch (error) {
-        console.error('Error retrieving vehicles:', error.message);
-        res.status(400).json({message: error.message});
-    }
-};
-
 exports.getAllBookedSlots = async (req, res) => {
     try {
         const slots = await appointmentService.getAllBookedSlots();

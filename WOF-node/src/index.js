@@ -14,7 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
     credentials: true, // Allowing cookies
 };
 
@@ -28,7 +28,6 @@ app.use('/auth', authRouters);
 app.use('/user', userMiddleware.verifyUserToken, userRoutes);
 app.use('/admin', adminMiddleware.verifyAdminToken, adminRoutes);
 app.use('/examiner', authMiddleware.verifyToken, examinerRoutes);
-// app.use('/vehicles', userMiddleware.verifyUserToken, vehicleRoutes); //should be removed and deviated into specific need to each examiner and user routes:
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
