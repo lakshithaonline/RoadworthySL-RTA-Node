@@ -4,8 +4,6 @@ const Admin = require('../models/admin');
 const {JWT_SECRET} = require("../utils/constants");
 const Examiner = require("../models/examiner");
 
-require('dotenv').config();
-
 const loginAdmin = async (username, password) => {
     const admin = await Admin.findOne({ username: username });
     if (!admin) {
